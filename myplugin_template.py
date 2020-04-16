@@ -52,7 +52,8 @@ def prova():
     print(L)
     for x in range(layer.width):
         for y in range(layer.height):
-            r=layer.get_pixel(x, y)[0]
+            r=layer_copy.get_pixel(x, y)[0]
+            print(r)
             t=r#qui praticamente devo applicare la formula per normalizzare
             ta=int(t)-int(minimo)
             #te=float(int(ta))*L
@@ -60,12 +61,12 @@ def prova():
             ti=te/(massimo-minimo)
             finale=int(ti)
             print(finale)
-            #pdb.gimp_drawable_set_pixel(layer_copy, x, y, 0, [t,0,0])
+            layer_copy.set_pixel(x, y, (abs(finale),))
             #layer.set_pixel(x, y, (t, L))
-    layer.update()
-
-  
-
+            #layer_copy.set_pixel(x,y,(finale,0,0))
+    #layer.update()
+    pdb.gimp_drawable_update(layer_copy, x, y, layer.width, layer.height)
+    img.add_layer(layer_copy,3)
 
 
 def controlla(array_passato):
