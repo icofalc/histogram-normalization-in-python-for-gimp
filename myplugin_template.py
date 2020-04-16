@@ -32,48 +32,37 @@ img.add_layer(layer_copy,3) #add layer in gimp posizione 3
 def prova():
     img=gimp.image_list()[0]
     
-    layer = pdb.gimp_image_get_active_layer(img)
+    #layer = pdb.gimp_image_get_active_layer(img)
     layer_copy=img.layers[0].copy()
-    print(img.layers)
-    array_temp=[]#qui ho i valori che devo normalizzare
-    for i in range(0,256):
-        highlights = pdb.gimp_histogram(layer, 0, i, i)
-        array_temp.append(highlights[4])
-        #print(highlights[4])
-        
-    massimo=max(array_temp)
-    #indice_massimo=array_temp.index(max(array_temp))
-   
-    minimo=min(array_temp)
-    #indice_minimo=array_temp.index(min(array_temp))
-    
-    array_normalizzato=[]#qui ho i valori che sono normalizzati
-    L=[255 / (massimo - minimo)]
-    print(L)
-    for x in range(layer.width):
-        for y in range(layer.height):
-            r=layer_copy.get_pixel(x, y)[0]
-            print(r)
-            t=r#qui praticamente devo applicare la formula per normalizzare
-            ta=int(t)-int(minimo)
-            #te=float(int(ta))*L
-            te=ta*255
-            ti=te/(massimo-minimo)
-            finale=int(ti)
-            print(finale)
-            layer_copy.set_pixel(x, y, (abs(finale),))
-            #layer.set_pixel(x, y, (t, L))
-            #layer_copy.set_pixel(x,y,(finale,0,0))
-    #layer.update()
-    pdb.gimp_drawable_update(layer_copy, x, y, layer.width, layer.height)
     img.add_layer(layer_copy,3)
+    print(img.layers)
+    array_temp=[]
+    for x in range(layer_copy.width):
+        for y in range(layer_copy.height):
+            r=layer_copy.get_pixel(x,y)[0]
+            array_temp.append(r)
+    
+    massimo=max(array_temp)
+    minimo=min(array_temp)
+    print(minimo)
+    print(massimo)
+    
+    costante=float(float(255) / float(massimo - minimo))
+    print(costante)
+    for x in range(layer_copy.width):
+        for y in range(layer_copy.height):
+            r=layer_copy.get_pixel(x, y)[0]
+            
+            if r >= minimo and r<=massimo:
+                r=r-minimo
+                r=r*costante
+            
+            layer_copy.set_pixel(x, y, (int(r),))
+            
+            
+    pdb.gimp_drawable_update(layer_copy, 0, 0, layer_copy.width, layer_copy.height)
+    
 
-
-def controlla(array_passato):
-    for f in array_passato:
-        print(f)
-        print("ok")
-     
 
 register(
          "python-fu-myplugin",
