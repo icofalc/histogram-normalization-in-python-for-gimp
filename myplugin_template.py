@@ -4,30 +4,8 @@ import array
 import numpy as np
 
 def myplugin(img,layer):
+    prova()
 
-
-
- 
-
-# the procedure code starts here
-
-white=(255, 255, 255)
-black=(0,0,0)
-img=gimp.image_list()[0]
-print img
-layer = pdb.gimp_image_get_active_layer(img)
-highlights = pdb.gimp_histogram(layer, 0, 179, 255)
-layer_copy=img.layers[0].copy()
-reg_layer_A=layer_copy.get_pixel_rgn(0,0,img.width,img.height,False,False) #prendo la regione che mi interessa da layer che ho copiato prima
-
-
-src_pixels_reg_A=array.array("B",reg_layer_A[0:img.width,0:img.height])# prendo i singoli valori dei pixel
-
-
-valori_normalizzati=_create_normalized_frequencies_greyscale(src_pixels_reg_A) #normalizzao i singoli valori dei pixel
-img.add_layer(layer_copy,3) #add layer in gimp posizione 3
-
-    # the procedure code ends here
 
 def prova():
     img=gimp.image_list()[0]
